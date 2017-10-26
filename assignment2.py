@@ -291,6 +291,7 @@ def main():
 	if (rank==0):
 		# Print the total time the program took before writing to output
 		print("Total time to compute: {:2f} seconds".format(MPI.Wtime() - wt))
+		# Testing if the merged list is equal to the merged input lists serially
 		test(a,b,merged)
 		# Writing to output file
 		output_file(merged,"/tmp/output_{}.txt".format(os.getpid()))
