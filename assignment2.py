@@ -61,9 +61,8 @@ def get_input(rank,comm,n):
 		rank - the id of the current processsor
 		comm - MPI communicator instance
 	Postconditinos:
-		Every process returns:
-			a - sorted list of random items in size n
-			b - sorted list of random items in size n
+		a - sorted list of random items in size n
+		b - sorted list of random items in size n
 	--------------------------------------------------------
 	"""
 	# Maximum number to generate
