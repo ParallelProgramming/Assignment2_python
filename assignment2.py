@@ -44,7 +44,7 @@ def binary_search(array,i,j,value):
 		else:
 			return j;
 	# Comparing to the item found in the middle of the range
-	k=i+(j-i)/2
+	k=i+math.floor((j-i)/2)
 	if (value<=array[k]):
 		# Recursion call for the lower half of the range
 		return binary_search(array,i,k,value)
@@ -52,46 +52,27 @@ def binary_search(array,i,j,value):
 		# Recursion call for the higher half of the range
 		return binary_search(array,k+1,j,value)
 
-def get_input(rank,comm):
+def get_input(rank,comm,n):
 	"""
 	-----------------------------------------------------
-	Process 0 is asking for number of items from the user
-	and sends the generated lists to the other processes
+	Generating two lists of random n numbers
 	-----------------------------------------------------
 	Preconditions:
 		rank - the id of the current processsor
 		comm - MPI communicator instance
 	Postconditinos:
 		Every process returns:
-			n - number of items in lists a and b
-			k - log of n in base 2
-			r - n/k
 			a - sorted list of random items in size n
 			b - sorted list of random items in size n
 	--------------------------------------------------------
 	"""
-	# Only rank 0 read input and generates the lists
-	if (rank==0):
-		print("Please enter the power of 2 representing the number of items to generate")
-		k=input()
-		# Maximum number to generate
-		LIM=3999999999
-		n = 2**k
-		# Generate the two lists
-		a = generate_randoms(n,LIM)
-		b = generate_randoms(n,LIM)
-		# If n/k has a reminder, add a partition
-		r = int(n/k)
-		if (n%k>0):
-			r+=1
-	else:
-		k = None
-		a = None
-		b = None
-		n = None
-		r = None
+	# Maximum number to generate
+	LIM=3999999999
+	# Generate the two lists
+	a = generate_randoms(n,LIM)
+	b = generate_randoms(n,LIM)
 	
-	return n,k,r,a,b
+	return a,b
 	
 def generate_randoms(n,lim):
         """
@@ -106,13 +87,13 @@ def generate_randoms(n,lim):
         -------------------------------------------------------------
         """
         a=np.empty(n,dtype=np.uint32)
-        increase=lim/n
+        increase=int(lim/n)
         last_value=1
-		# Generate each new number as a random between the previous_value 
-		# and a relative increase to ensure a sorted order
+	# Generate each new number as a random between the previous_value 
+	# and a relative increase to ensure a sorted order
         for i in range(n):
                 a[i] = random.randint(0,increase) + last_value
-		last_value=a[i]
+                last_value = a[i]
         return a
 
 def merge(a,b,a_start,a_end,b_start,b_end):
@@ -198,8 +179,8 @@ def test(a,b,c):
 				elif (index_b<len(b) and b[index_b] == item):
 					index_b +=1
 				else:
-					print("discrepancy found when comparing the two lists to the third. a size={}, b size={}, csize={}"
-						.format(len(a),len(b),count_c))
+					print("discrepancy found when comparing the two lists to the third. a size={}, b size={}, c size={}, c_value={}"
+						.format(len(a),len(b),count_c,item))
 					return False
 				count_c+=1
 	if (index_a == len(a) and index_b==len(b) and count_c==len(a) + len(b)):
@@ -214,19 +195,24 @@ def main():
 	comm = MPI.COMM_WORLD
 	size = comm.Get_size()
 	rank = comm.Get_rank()
-
-	# Get size n, k=logn, r=n/k and sorted lists a and b from input
-	n,k,r,a,b = get_input(rank,comm)
+	# Get the number k representing a power of 2 from the user
+	if (len(sys.argv)<2 or not sys.argv[1].isdigit()):
+		print("Please supply the program with the number of items")
+		exit(1)
+	k = int(sys.argv[1])
+	n = 2**k
+	r = int (n/k)
+	# When n is not divided by k, increase the number of partitions by 1
+	if (n%k>0):
+		r+=1
 	#Barrier to measure start time afte input
 	comm.Barrier()
 	if (rank==0):
+		# Get the two random arrays
+		a,b = get_input(rank,comm,n)
 		print("Done with input stage")
 		wt = MPI.Wtime()
-	# Broadcasting the values of n,k and r to size-1 processes
-	k = comm.bcast(k,root=0)
-	n = comm.bcast(n,root=0)
-	r = comm.bcast(r,root=0)
-	if (rank>0):
+	else:
 		a = np.empty(n,dtype=np.uint32)
 		b = np.empty(n,dtype=np.uint32)
 	# Broadcasting the two random lists to size-1 processes
@@ -234,7 +220,11 @@ def main():
 	comm.Bcast(b,root=0)
 	# Dividing the partitions between the processes
 	if(rank<(r%size)):
-		partitions = int(math.floor(r/size))+1
+		# For one processor, no need to partition
+		if (size==1):
+			partitions = 1
+		else:
+			partitions = int(math.floor(r/size))+1
 	else:
 		partitions = int(math.floor(r/size))		
 	
@@ -257,12 +247,12 @@ def main():
 			a_end.insert(index,int(a_start[index] + k-1))
 			# Finding the local upper limit in list b, by using binary search to find the minimum value bigger then the maximum local value in a
 			index_b = binary_search(b,0,len(b)-1,a[a_end[index]])
-            		b_end.insert(index,index_b)
+			b_end.insert(index,index_b)
 		else:
 			a_end.insert(index,n-1)
 			b_end.insert(index,n-1)	
 		# The index to start iterating over b is 1 after the last index of the previous partition
-                if (index>0):
+		if (index>0):
                 	b_start.insert(index,b_end[index-1]+1)
 	
 	# Sending the process last found b_end to be the neighbor's first b_start, for all but the last process
@@ -283,7 +273,7 @@ def main():
 	for index in range(partitions):
 		# Merging lists a and b in relevant positions into a local list c
         	merged_lists.append(merge(a,b,a_start[index],a_end[index],b_start[index],b_end[index]))
-	
+
 	# Process 0 gathers all merged lists into a new list merged, ordered by ranking index
 	merged = comm.gather(merged_lists,root=0)
 	
@@ -294,7 +284,7 @@ def main():
 		# Testing if the merged list is equal to the merged input lists serially
 		test(a,b,merged)
 		# Writing to output file
-		output_file(merged,"/tmp/output_{}.txt".format(os.getpid()))
+		output_file(merged,"/scratch/otwluq1/a2/output_{}.txt".format(os.getpid()))
 	
 	
 main()	
