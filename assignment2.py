@@ -217,13 +217,12 @@ def main():
 	# Broadcasting the two random lists to size-1 processes
 	comm.Bcast(a,root=0)
 	comm.Bcast(b,root=0)
+	# For one processor, no need to partition
+	if (size==1):
+		partitions = 1
 	# Dividing the partitions between the processes
-	if(rank<(r%size)):
-		# For one processor, no need to partition
-		if (size==1):
-			partitions = 1
-		else:
-			partitions = int(math.floor(r/size))+1
+	elif(rank<(r%size)):
+		partitions = int(math.floor(r/size))+1
 	else:
 		partitions = int(math.floor(r/size))		
 	
