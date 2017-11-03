@@ -1,0 +1,110 @@
+2 Processor:
+
+Done with input stage
+Total time to compute: 8.667797 seconds
+Tested and found correct
+Sucessfully wrote results to file /scratch/otwluq1/a2/output_12098.txt
+--- SharcNET Job Epilogue ---
+              job id: 10927619
+         exit status: 0
+            cpu time: 50s / 2.0h (0 %)
+        elapsed time: 33s / 1.0h (0 %)
+      virtual memory: 784.9M / 1.0G (76 %)
+
+Job completed successfully
+
+--------------------------------------------------------------------------
+3 Processor:
+
+Done with input stage
+Total time to compute: 6.214778 seconds
+Tested and found correct
+Sucessfully wrote results to file /scratch/otwluq1/a2/output_12165.txt
+--- SharcNET Job Epilogue ---
+              job id: 10927620
+         exit status: 0
+            cpu time: 64s / 3.0h (0 %)
+        elapsed time: 32s / 1.0h (0 %)
+      virtual memory: 263.3M / 1.0G (25 %)
+
+Job completed successfully
+
+--------------------------------------------------------------------------
+4 Processor:
+
+Done with input stage
+Total time to compute: 4.816678 seconds
+Tested and found correct
+Sucessfully wrote results to file /scratch/otwluq1/a2/output_11544.txt
+--- SharcNET Job Epilogue ---
+              job id: 10927621
+         exit status: 0
+            cpu time: 79s / 4.0h (0 %)
+        elapsed time: 32s / 1.0h (0 %)
+      virtual memory: 401.4M / 1.0G (39 %)
+
+Job completed successfully
+
+--------------------------------------------------------------------------
+5 Processor:
+
+Done with input stage
+Total time to compute: 4.247634 seconds
+Tested and found correct
+Sucessfully wrote results to file /scratch/otwluq1/a2/output_9748.txt
+--- SharcNET Job Epilogue ---
+              job id: 10927622
+         exit status: 0
+            cpu time: 104s / 5.0h (0 %)
+        elapsed time: 31s / 1.0h (0 %)
+      virtual memory: 520.8M / 1.0G (50 %)
+
+Job completed successfully
+
+--------------------------------------------------------------------------
+6 Processor:
+Done with input stage
+Total time to compute: 3.405965 seconds
+Tested and found correct
+Sucessfully wrote results to file /scratch/otwluq1/a2/output_27651.txt
+--- SharcNET Job Epilogue ---
+              job id: 10927623
+         exit status: 0
+            cpu time: 105s / 6.0h (0 %)
+        elapsed time: 24s / 1.0h (0 %)
+
+Job completed successfully
+
+
+--------------------------------------------------------------------------
+7 Processor:
+
+Done with input stage
+Total time to compute: 2.980946 seconds
+Tested and found correct
+Sucessfully wrote results to file /scratch/otwluq1/a2/output_27727.txt
+--- SharcNET Job Epilogue ---
+              job id: 10927624
+         exit status: 0
+            cpu time: 121s / 7.0h (0 %)
+        elapsed time: 28s / 1.0h (0 %)
+      virtual memory: 613.4M / 1.0G (59 %)
+
+Job completed successfully
+
+
+--------------------------------------------------------------------------
+8 Processor:
+
+Done with input stage
+Total time to compute: 2.916491 seconds
+Tested and found correct
+Sucessfully wrote results to file /scratch/otwluq1/a2/output_27803.txt
+--- SharcNET Job Epilogue ---
+              job id: 10927625
+         exit status: 0
+            cpu time: 136s / 8.0h (0 %)
+        elapsed time: 27s / 1.0h (0 %)
+      virtual memory: 117.2M / 1.0G (11 %)
+
+Job completed successfully
