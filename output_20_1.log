@@ -1,0 +1,15 @@
+Done with input stage
+Total time to compute: 1.936928 seconds
+Tested and found correct
+Sucessfully wrote results to file /scratch/otwluq1/a2/output_28409.txt
+--- SharcNET Job Epilogue ---
+              job id: 10946869
+         exit status: 0
+            cpu time: 29s / 600s (4 %)
+        elapsed time: 30s / 600s (5 %)
+      virtual memory: 691.2M / 2.0G (33 %)
+
+Job completed successfully
+WARNING: Job only used 5 % of its requested walltime.
+WARNING: Job only used 4 % of its requested cpu time.
+WARNING: Job only used 33% of its requested memory.
